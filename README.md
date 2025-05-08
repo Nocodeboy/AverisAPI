@@ -30,6 +30,7 @@ API avanzada para procesamiento multimedia y voz con funciones mejoradas de vide
 - **Transcripción de audio a texto** usando modelos avanzados
 - **Detección automática de idioma**
 - **Soporte para más de 15 idiomas**
+- **Procesamiento por lotes** de múltiples archivos
 
 ## 📋 Requisitos
 
@@ -112,6 +113,50 @@ docker run -d -p 8080:8080 \
   averis-api
 ```
 
+## 📝 Ejemplo de uso
+
+Incluimos un cliente de demostración que muestra cómo utilizar la API:
+
+```bash
+# Activar entorno virtual
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+# Ejecutar demo
+python examples/demo_client.py
+```
+
+La demo mostrará cómo:
+1. Aplicar efectos de video (sepia, dream effect, VHS)
+2. Crear videos a partir de imágenes con efecto Ken Burns
+3. Convertir texto a voz
+4. Ver los idiomas disponibles
+
+También puedes usar programáticamente la API en tus aplicaciones:
+
+```python
+import requests
+
+# Configuración
+API_KEY = "tu_api_key"
+API_URL = "http://localhost:8080"
+
+# Aplicar efecto a un video
+def apply_vhs_effect(video_path, output_path):
+    url = f"{API_URL}/video/vhs_effect"
+    headers = {"X-API-Key": API_KEY, "Content-Type": "application/json"}
+    data = {
+        "video_path": video_path,
+        "output_path": output_path,
+        "intensity": 0.7
+    }
+    response = requests.post(url, json=data, headers=headers)
+    return response.json()
+
+# Ejemplo de uso
+result = apply_vhs_effect("input.mp4", "output_vhs.mp4")
+print(result)
+```
+
 ## 🧪 Pruebas
 
 ```bash
@@ -130,6 +175,28 @@ Consulta la carpeta `/docs` para documentación detallada sobre cada endpoint:
 - [Voice Technologies](/docs/voice/)
 - [Storage](/docs/storage/)
 - [Code Execution](/docs/code/)
+
+## 📚 API Endpoints
+
+### Video
+- `/video/apply_effect` - Aplicar filtros de color básicos
+- `/video/add_transition` - Añadir transiciones entre clips
+- `/video/enhance` - Mejorar calidad de video
+- `/video/apply_overlay` - Añadir overlay/marca de agua
+- `/video/timelapse` - Crear timelapse
+- `/video/cinematic_bars` - Añadir barras cinematográficas
+- `/video/dream_effect` - Aplicar efecto soñador
+- `/video/rgb_split` - Efecto RGB split/glitch
+- `/video/vhs_effect` - Efecto VHS retro
+- `/video/ken_burns` - Efecto Ken Burns para imágenes
+
+### Voz
+- `/voice/text_to_speech` - Convertir texto a voz
+- `/voice/translate` - Traducir audio entre idiomas
+- `/voice/batch_translate` - Procesamiento por lotes
+- `/voice/transcribe` - Transcribir audio a texto
+- `/voice/languages` - Obtener idiomas disponibles
+- `/voice/stream` - Transmitir audio para reproducción
 
 ## 🚀 En desarrollo (próximas características)
 
